@@ -1,2 +1,1 @@
-Pepito Pérez: 4
-Juanita Gómez: 10
+{"Ceil Langstaff":1,"Bobette Artharg":13,"Polly Rushman":0,"Doralin Marjanovic":0,"Elianora Stannett":0,"Saunders Gaine":0,"Pavel Lyness":0,"Becka Marner":0,"Juanito":1}

@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
+    "@mui/icons-material": "^5.0.5",
     "@mui/material": "^5.0.6",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -15,9 +16,11 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "express": "^4.17.1",
+    "node-sass": "^6.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "sass": "^1.43.4",
     "ts-node": "^10.4.0",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
@@ -27,7 +30,7 @@
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "server": "ts-node --project tsconfig.server.json server/index.ts",
-    "watch:server": "nodemon -w server -e ts --exec yarn server",
+    "watch:server": "nodemon server.js",
     "watch:all": "concurrently -n back,front \"yarn watch:server\" \"yarn start\""
   },
   "eslintConfig": {
