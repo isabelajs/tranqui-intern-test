@@ -1,18 +1,43 @@
 import { Stack, IconButton, Container, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import React from 'react';
+import React , {useEffect, useCallback, useState, useRef} from 'react';
 import '../styles/app.scss'
 
+interface nameCounter{
+  [key:string]: number
+}
+
+
 function App() {
+  const[state, setState] = useState({
+    data:{} as nameCounter,
+    loading:true,
+    error:false,
+  })
+  
 
-  
-  
-  let data = {"Ceil Langstaff":1,"Bobette Artharg":13,"Polly Rushman":0,"Doralin Marjanovic":0,"Elianora Stannett":0,"Saunders Gaine":0}
 
-  let info = Object.entries(data)
-  
-  console.log(info)
+  const fetchData = useCallback( async ()=>{
+    const res = await fetch('http://localhost:3333/api/usernames')
+    const data = await res.json()
+    setState({
+      data,
+      error:false,
+      loading:false
+    })
+  },[])
+
+
+  const handlePlus = (name:string) =>{
+    console.log(name)
+    //inside de fetch post to counter the name plus 1
+  }
+
+  useEffect(()=>{
+    fetchData()
+  },[])
+
 
   return (
   <>
@@ -31,22 +56,26 @@ function App() {
 
           <TableBody>
             {
-              info.map(element=> (
+              Object.entries(state.data).map((lista,index)=> (
                 <TableRow
-                  key={element[0]}
+                  key={index}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 }}}
                 >
                   <TableCell component="th" scope="row">
-                    {element[0]}
+                    {lista[0]}
                   </TableCell>
 
-                  <TableCell align="center">{element[1]}</TableCell>
+                  <TableCell align="center">{lista[1]}</TableCell>
 
                   <TableCell align='center'> 
                       
                       <Stack direction='row' spacing={1} justifyContent="center">
-                        <IconButton aria-label="delete">
+
+                        <IconButton onClick={()=>{
+                          handlePlus(lista[0])
+                        }} aria-label="plus">
                           <AddIcon/>
+
                         </IconButton>
                         <IconButton aria-label="delete">
                           <DeleteIcon/>
@@ -68,3 +97,5 @@ function App() {
 }
 
 export default App;
+
+
