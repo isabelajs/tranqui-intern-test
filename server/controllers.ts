@@ -39,9 +39,10 @@ export const getRandomNames = async ()=>{
 
   const randomData = {} as nameCounters
 
-  mockData.filter((v,index) => randomIndex.includes(index)).forEach(element =>{
-    randomData[Object.keys(element)[0]] = counters[Object.keys(element)[0]] || 0 
+  randomIndex.map(index=>mockData[index]).forEach(element =>{
+      randomData[Object.keys(element)[0]] = counters[Object.keys(element)[0]] || 0 
   })
+
 
   return {
     quantity: randomQuantity,
