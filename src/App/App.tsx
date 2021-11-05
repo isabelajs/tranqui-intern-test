@@ -78,7 +78,8 @@ function App() {
   <>
     <Container className='container' maxWidth="md">
       <h1 className='container__title'>Prueba para practicante de desarrollo web</h1>
-      <TableContainer component={Paper} sx={{margin:3}}>
+      
+      <TableContainer  component={Paper} sx={{margin:0}}>
         <Table sx={{ minWidth: 400 }} size="small"  aria-label="simple table">
 
           <TableHead>
