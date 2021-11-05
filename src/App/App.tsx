@@ -2,7 +2,7 @@ import { Stack, IconButton, Container, Paper, TableContainer, Table, TableHead, 
 import DeleteIcon from '@mui/icons-material/Delete';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
-import React , {useEffect, useCallback, useState, useRef} from 'react';
+import React , {useEffect, useCallback, useState} from 'react';
 import '../styles/app.scss'
 
 interface nameCounter{
@@ -55,32 +55,25 @@ function App() {
     }
   }
 
-  const handlePlus = (name:string) =>{
-
-    updateData(name,'plus')
-  }
-
-  const handleMinus = (name:string) =>{
-
-    updateData(name,'minus')
-  }
-
-  const handleDelete = (name:string)=>{
-    updateData(name,'delete')
-  }
 
   useEffect(()=>{
     fetchData()
+    const timer = setInterval(()=>{
+      fetchData()
+    },5000)
+
+    return ()=> clearInterval(timer)
   },[])
 
 
-  //TODO: put a loader when the data is loading
   return (
   <>
     <Container className='container' maxWidth="md">
       <h1 className='container__title'>Prueba para practicante de desarrollo web</h1>
       
-      <TableContainer  component={Paper} sx={{margin:0}}>
+      {state.loading
+      ? <div className="lds-dual-ring"></div>
+      : <TableContainer  component={Paper} sx={{margin:0}}>
         <Table sx={{ minWidth: 400 }} size="small"  aria-label="simple table">
 
           <TableHead>
@@ -110,7 +103,7 @@ function App() {
 
                         <IconButton     
                           onClick={()=>{
-                            handlePlus(lista[0])
+                            updateData(lista[0],"plus")
                           }} 
                           aria-label="plus"  
                           size="small">
@@ -119,7 +112,7 @@ function App() {
 
                         <IconButton 
                           onClick={ ()=>{
-                            handleMinus(lista[0])
+                            updateData(lista[0],"minus")
                           }}
                           aria-label="minus" 
                           size="small">
@@ -128,9 +121,9 @@ function App() {
 
                         <IconButton 
                           onClick = { ()=>{
-                            handleDelete(lista[0])
+                            updateData(lista[0],"delete")
                           }}
-                          aria-label="minus"  
+                          aria-label="delete"  
                           size="small">
                             <DeleteIcon fontSize="small" sx={{color:'#525252'}}/>
                         </IconButton>
@@ -144,7 +137,7 @@ function App() {
           </TableBody>
 
         </Table>
-      </TableContainer>
+      </TableContainer>}
     </Container>
   </>
   );

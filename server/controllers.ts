@@ -81,35 +81,34 @@ export async function updateName(name:string,type:string):Promise<returnUpdateNa
 
   if (name && typeof name === "string") {
 
-    if (data[name]) {
-      
-      switch (type) {
-        case "plus":
-          data[name]++
-          break;
-        case "minus":
-          data[name]--
-          break
+    
+    switch (type) {
+      case "plus":
 
-        case "delete":
-          delete data[name]
-          break
-        default:
-          break;
-      }
+        data[name] ? data[name]++ : data[name] =1
+        break;
 
-    } 
+      case "minus":
 
-    if(!data[name] && type === 'plus'){
-        data[name] = 1;
+        data[name] > 1 ? data[name]-- : delete data[name]
+        break
+
+      case "delete":
+
+        data[name] && delete data[name]
+        break
+
+      default:
+        break;
     }
+
 
     await writeData(JSON.stringify(data));
 
     return{
       message: "sucessfull",
       error: false,
-      data: data[name]
+      data: data[name] || 0
     }
   }else{
       return{
@@ -120,5 +119,3 @@ export async function updateName(name:string,type:string):Promise<returnUpdateNa
   }
 
 }
-
-
