@@ -13,18 +13,23 @@ interface returnUpdateName{
   data: number,
 }
 
-
+//get data
 const getData = async () => {
   const filePath = path.resolve(__dirname, "counter.txt");
-
-
   return new Promise((res, rej) => {
     fs.readFile(filePath, "utf8", (err, data) => {
       if (err) {
         rej(err);
         return;
       }
-      res(JSON.parse(data));
+
+
+      const x = data ? data : '{}'
+
+      const response = JSON.parse(x)
+
+      res(response)
+
     });
   });
 };
@@ -93,8 +98,10 @@ export async function updateName(name:string,type:string):Promise<returnUpdateNa
           break;
       }
 
-    } else {
-      data[name] = 1;
+    } 
+
+    if(!data[name] && type === 'plus'){
+        data[name] = 1;
     }
 
     await writeData(JSON.stringify(data));

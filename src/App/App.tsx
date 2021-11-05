@@ -1,5 +1,6 @@
 import { Stack, IconButton, Container, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import React , {useEffect, useCallback, useState, useRef} from 'react';
 import '../styles/app.scss'
@@ -27,45 +28,45 @@ function App() {
     })
   },[])
 
+  
+  const updateData = async (name:string, action:string)=>{
+    const res = await fetch('http://localhost:3333/api/namescounter',{
+      method:'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body:JSON.stringify({
+        name,
+        type: action
+      })
+    })
+
+    const response = await res.json()
+
+    // if not have a error set change the new value to the counter name (only the name that change)
+    if(!response.error){
+      setState({
+        ...state,
+        data: {
+          ...state.data,
+          [name]: response.data
+        }
+      })
+    }
+  }
 
   const handlePlus = (name:string) =>{
-    
-    //this fetch return this response
-    // {
-    //   message
-    //   error
-    //   data : this is the new number to the counter, nothing more
-    // }
 
-    //the body of fetch needs the user name and the type of the change (plus, minus, delete)
+    updateData(name,'plus')
+  }
 
-    const updateData = async ()=>{
-      const res = await fetch('http://localhost:3333/api/namescounter',{
-        method:'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body:JSON.stringify({
-          name,
-          type: 'plus'
-        })
-      })
+  const handleMinus = (name:string) =>{
 
-      const response = await res.json()
+    updateData(name,'minus')
+  }
 
-      // if not have a error set change the new value to the counter name (only the name that change)
-      if(!response.error){
-        setState({
-          ...state,
-          data: {
-            ...state.data,
-            [name]: response.data
-          }
-        })
-      }
-    }
-
-    updateData()
+  const handleDelete = (name:string)=>{
+    updateData(name,'delete')
   }
 
   useEffect(()=>{
@@ -107,14 +108,31 @@ function App() {
                       
                       <Stack direction='row' spacing={1} justifyContent="center">
 
-                        <IconButton onClick={()=>{
-                          handlePlus(lista[0])
-                        }} aria-label="plus">
-                          <AddIcon/>
-
+                        <IconButton     
+                          onClick={()=>{
+                            handlePlus(lista[0])
+                          }} 
+                          aria-label="plus"  
+                          size="small">
+                          <AddIcon fontSize="small"/>
                         </IconButton>
-                        <IconButton aria-label="delete">
-                          <DeleteIcon/>
+
+                        <IconButton 
+                          onClick={ ()=>{
+                            handleMinus(lista[0])
+                          }}
+                          aria-label="minus" 
+                          size="small">
+                          <RemoveIcon fontSize="small"/>
+                        </IconButton>
+
+                        <IconButton 
+                          onClick = { ()=>{
+                            handleDelete(lista[0])
+                          }}
+                          aria-label="minus"  
+                          size="small">
+                            <DeleteIcon fontSize="small" sx={{color:'#525252'}}/>
                         </IconButton>
                       </Stack>
 

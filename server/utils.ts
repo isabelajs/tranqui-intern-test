@@ -7,5 +7,3 @@ export const randomNumber = (min:number,max:number,quantity:number=1) =>{
   }
 }
 
-
-// export const randomNumbers = ()

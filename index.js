@@ -106,5 +106,3 @@ let x = names.map((name) => {
     [`${name.first_name} ${name.last_name}`]: 0,
   };
 });
-
-console.log(x);
