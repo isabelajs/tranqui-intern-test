@@ -100,9 +100,3 @@ const names = [
   { first_name: "Pavel", last_name: "Lyness" },
   { first_name: "Becka", last_name: "Marner" },
 ];
-
-let x = names.map((name) => {
-  return {
-    [`${name.first_name} ${name.last_name}`]: 0,
-  };
-});
