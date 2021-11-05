@@ -1,8 +1,23 @@
 import fs from "fs";
 import path from "path";
+import mockData from "./mockData.json";
+import {randomNumber} from './utils'
+
+interface nameCounters{
+  [key: string]: number
+}
+
+interface returnUpdateName{
+  message: string,
+  error: boolean,
+  data: number,
+}
+
 
 const getData = async () => {
   const filePath = path.resolve(__dirname, "counter.txt");
+
+
   return new Promise((res, rej) => {
     fs.readFile(filePath, "utf8", (err, data) => {
       if (err) {
@@ -14,6 +29,26 @@ const getData = async () => {
   });
 };
 
+export const getRandomNames = async ()=>{
+
+  const counters = await getData() as nameCounters
+
+  const randomQuantity = randomNumber(5,8) as number
+
+  const randomIndex = randomNumber(0,mockData.length-1,randomQuantity) as number[]
+
+  const randomData = {} as nameCounters
+
+  mockData.filter((v,index) => randomIndex.includes(index)).forEach(element =>{
+    randomData[Object.keys(element)[0]] = counters[Object.keys(element)[0]] || 0 
+  })
+
+  return {
+    quantity: randomQuantity,
+    names: randomData
+  }
+}
+
 const writeData = async (text:string) => {
   const filePath = path.resolve(__dirname, "counter.txt");
 
@@ -21,7 +56,6 @@ const writeData = async (text:string) => {
     fs.writeFile(filePath, text, function (err) {
       if (err) return rej(err);
 
-      console.log("todo melo");
       res("Write sucesfull");
     });
   });
@@ -33,28 +67,30 @@ export async function getNames() {
   return data;
 }
 
+export async function updateName(name:string,type:string):Promise<returnUpdateName>{
 
-interface Test{
-  [key: string]: number
-}
+  const data = await getNames() as nameCounters
 
-interface returnUpdateName{
-  message: string,
-  error: boolean,
-  data: number,
-}
-
-export async function updateName(name:string,minusType?:boolean):Promise<returnUpdateName>{
-
-  const data = await getNames() as Test
-
-  console.log('llego',minusType)
+  console.log(type,name)
 
   if (name && typeof name === "string") {
+
     if (data[name]) {
+      
+      switch (type) {
+        case "plus":
+          data[name]++
+          break;
+        case "minus":
+          data[name]--
+          break
 
-      data[name] =  minusType ? data[name] - 1 : data[name] + 1;
-
+        case "delete":
+          delete data[name]
+          break
+        default:
+          break;
+      }
 
     } else {
       data[name] = 1;
@@ -74,9 +110,6 @@ export async function updateName(name:string,minusType?:boolean):Promise<returnU
       data: 0
     }
   }
-
-
-
 
 }
 

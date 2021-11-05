@@ -1,5 +1,5 @@
 
-import { getNames, updateName } from "./controllers";
+import { getNames, updateName, getRandomNames } from "./controllers";
 import express from 'express'
 
 
@@ -7,7 +7,7 @@ import express from 'express'
 const rutas = express.Router();
 
 //Get all userNames
-rutas.get("/api/usernames", async (req, res) => {
+rutas.get("/api/namescounter", async (req, res) => {
 
   const data = await getNames();
 
@@ -15,14 +15,18 @@ rutas.get("/api/usernames", async (req, res) => {
 });
 
 
+rutas.get('/api/randomnames', async (req,res)=>{
+  
+  res.json(await getRandomNames())
+})
+
+
 //Count a userName 
-rutas.post("/api/usernames", async(req,res)=>{
+rutas.post("/api/namescounter", async(req,res)=>{
 
-  const {name,minusType} = req.body
+  const {name,type} = req.body
 
-  console.log(name,minusType)
-
-  const responseUpdate = await updateName(name,minusType ? true : false)
+  const responseUpdate = await updateName(name,type)
 
   res.json(responseUpdate)
 

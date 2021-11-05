@@ -17,12 +17,11 @@ function App() {
   })
   
 
-
   const fetchData = useCallback( async ()=>{
-    const res = await fetch('http://localhost:3333/api/usernames')
+    const res = await fetch('http://localhost:3333/api/randomnames')
     const data = await res.json()
     setState({
-      data,
+      data: data.names,
       error:false,
       loading:false
     })
@@ -30,8 +29,43 @@ function App() {
 
 
   const handlePlus = (name:string) =>{
-    console.log(name)
-    //inside de fetch post to counter the name plus 1
+    
+    //this fetch return this response
+    // {
+    //   message
+    //   error
+    //   data : this is the new number to the counter, nothing more
+    // }
+
+    //the body of fetch needs the user name and the type of the change (plus, minus, delete)
+
+    const updateData = async ()=>{
+      const res = await fetch('http://localhost:3333/api/namescounter',{
+        method:'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body:JSON.stringify({
+          name,
+          type: 'plus'
+        })
+      })
+
+      const response = await res.json()
+
+      // if not have a error set change the new value to the counter name (only the name that change)
+      if(!response.error){
+        setState({
+          ...state,
+          data: {
+            ...state.data,
+            [name]: response.data
+          }
+        })
+      }
+    }
+
+    updateData()
   }
 
   useEffect(()=>{
@@ -39,6 +73,7 @@ function App() {
   },[])
 
 
+  //TODO: put a loader when the data is loading
   return (
   <>
     <Container className='container' maxWidth="md">
