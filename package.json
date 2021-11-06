@@ -29,13 +29,14 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "eject": "react-scripts ejsect",
+    "start":"yarn server",
+    "start:app": "react-scripts start",
+    "build:app": "react-scripts build",
+    "eject:app": "react-scripts ejsect",
     "server": "ts-node --project tsconfig.server.json server/index.ts",
     "watch:server": "nodemon -w server -e ts --exec yarn server",
     "watch:all": "concurrently -n back,front \"yarn start\" \"yarn watch:server\" ",
-    "production": "yarn server"
+    "heroku-postbuild": "yarn build:app"
   },
   "eslintConfig": {
     "extends": [
