@@ -91,7 +91,7 @@ export async function updateName(
 
   console.log(type, name);
 
-  if (name && typeof name === "string") {
+  if (!!name) {
     switch (type) {
       case actionType.plus:
         data[name] ? data[name]++ : (data[name] = 1);
