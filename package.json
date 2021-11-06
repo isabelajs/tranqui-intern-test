@@ -35,8 +35,7 @@
     "server": "ts-node --project tsconfig.server.json server/index.ts",
     "watch:server": "nodemon -w server -e ts --exec yarn server",
     "watch:all": "concurrently -n back,front \"yarn start\" \"yarn watch:server\" ",
-    "production": "yarn server",
-    "heroku-postbuild": "yarn server"
+    "production": "yarn server"
   },
   "eslintConfig": {
     "extends": [
