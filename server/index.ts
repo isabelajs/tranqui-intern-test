@@ -8,14 +8,6 @@ const app = express()
 const port = 5000;
 dotenv.config()
 
-// let url:string
-
-// if(process.env.NODE_MODE === 'PRODUCTION'){
-//   url = 'https://tranqui-test.herokuapp.com'
-// }else{
-//   url = 'http://localhost:'
-// }
-
 console.log(process.env.NODE_ENV, process.env.NODE_MODE)
 //middlewares
 app.use(express.json());
@@ -37,7 +29,7 @@ app.get("/api", (req, response) => {
 
 //para toda que no coincida con las otras rutas
 
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(path.dirname(__dirname), 'build', 'index.html'));
 });
 
