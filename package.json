@@ -33,7 +33,8 @@
     "eject": "react-scripts eject",
     "server": "ts-node --project tsconfig.server.json server/index.ts",
     "watch:server": "nodemon -w server -e ts --exec yarn server",
-    "watch:all": "concurrently -n back,front \"yarn watch:server\" \"yarn start\""
+    "watch:all": "concurrently -n back,front \"yarn start\" \"yarn watch:server\" ",
+    "production": "rm -rf ./build && yarn build && yarn server"
   },
   "eslintConfig": {
     "extends": [
