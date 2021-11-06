@@ -2,10 +2,21 @@ import express from "express";
 import router from './views';
 import cors from 'cors';
 import path from "path";
+import dotenv from 'dotenv'
 
-const app = express();
+const app = express()
 const port = 3333;
+dotenv.config()
 
+let url:string
+
+if(process.env.NODE_MODE === 'PRODUCTION'){
+  url = 'https://tranqui-test.herokuapp.com'
+}else{
+  url = 'http://localhost:'
+}
+
+console.log(process.env.NODE_TEST)
 //middlewares
 app.use(express.json());
 app.use(cors());
@@ -31,5 +42,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`server started at http://localhost:${port}`);
+  console.log(`server started at ${port}`);
 });

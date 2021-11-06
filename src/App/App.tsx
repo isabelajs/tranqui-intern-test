@@ -9,6 +9,8 @@ interface nameCounter{
   [key:string]: number
 }
 
+let url = process.env.NODE_ENV === "development" ? 'http://localhost:3333' : "https://tranqui-test.herokuapp.com"
+
 
 function App() {
   const[state, setState] = useState({
@@ -30,7 +32,7 @@ function App() {
 
   
   const updateData = async (name:string, action:string)=>{
-    const res = await fetch('http://localhost:3333/api/namescounter',{
+    const res = await fetch(`${url}api/namescounter`,{
       method:'POST',
       headers: {
         'Content-Type': 'application/json'

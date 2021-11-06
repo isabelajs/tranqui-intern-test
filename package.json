@@ -17,6 +17,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "node-sass": "^6.0.1",
     "react": "^17.0.2",
@@ -34,7 +35,7 @@
     "server": "ts-node --project tsconfig.server.json server/index.ts",
     "watch:server": "nodemon -w server -e ts --exec yarn server",
     "watch:all": "concurrently -n back,front \"yarn start\" \"yarn watch:server\" ",
-    "production": "rm -rf ./build && yarn build && yarn server"
+    "production": "set NODE_MODE=PRODUCTION&& rm -rf ./build && yarn build && yarn server"
   },
   "eslintConfig": {
     "extends": [
