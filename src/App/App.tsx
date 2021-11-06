@@ -9,8 +9,6 @@ interface nameCounter{
   [key:string]: number
 }
 
-let url = process.env.NODE_ENV === "production" ?  "https://tranqui-test.herokuapp.com" : 'https://localhost:5000'
-
 
 function App() {
   const[state, setState] = useState({
@@ -20,10 +18,8 @@ function App() {
   })
   
 
-  console.log(url)
-
   const fetchData = useCallback( async ()=>{
-    const res = await fetch(`/api/randomnames`)
+    const res = await fetch(`http://localhost:5000/api/randomnames`)
     const data = await res.json()
     setState({
       data: data.names,
@@ -34,7 +30,7 @@ function App() {
 
   
   const updateData = async (name:string, action:string)=>{
-    const res = await fetch(`/api/namescounter`,{
+    const res = await fetch(`http://localhost:5000/api/namescounter`,{
       method:'POST',
       headers: {
         'Content-Type': 'application/json'

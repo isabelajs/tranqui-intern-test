@@ -1,19 +1,25 @@
 import fs from "fs";
 import path from "path";
 import mockData from "./mockData.json";
-import {randomNumber} from './utils'
+import { randomNumber } from "./utils";
 
-interface nameCounters{
-  [key: string]: number
+interface nameCounters {
+  [key: string]: number;
 }
 
-interface returnUpdateName{
-  message: string,
-  error: boolean,
-  data: number,
+interface returnUpdateName {
+  message: string;
+  error: boolean;
+  data: number;
 }
 
-//get data
+enum actionType {
+  plus = "plus",
+  minus = "minus",
+  delete = "delete",
+}
+
+//get data from counter.txt
 const getData = async () => {
   const filePath = path.resolve(__dirname, "counter.txt");
   return new Promise((res, rej) => {
@@ -23,39 +29,42 @@ const getData = async () => {
         return;
       }
 
+      const dataResponse = data ? data : "{}";
 
-      const x = data ? data : '{}'
-
-      const response = JSON.parse(x)
-
-      res(response)
-
+      res(JSON.parse(dataResponse));
     });
   });
 };
 
-export const getRandomNames = async ()=>{
+// get random names from database
+export const getRandomNames = async () => {
+  const counters = (await getData()) as nameCounters;
 
-  const counters = await getData() as nameCounters
+  const randomQuantity = randomNumber(5, 8) as number;
 
-  const randomQuantity = randomNumber(5,8) as number
+  const randomIndex = randomNumber(
+    0,
+    mockData.length - 1,
+    randomQuantity
+  ) as number[];
 
-  const randomIndex = randomNumber(0,mockData.length-1,randomQuantity) as number[]
+  const randomData = {} as nameCounters;
 
-  const randomData = {} as nameCounters
-
-  randomIndex.map(index=>mockData[index]).forEach(element =>{
-      randomData[Object.keys(element)[0]] = counters[Object.keys(element)[0]] || 0 
-  })
-
+  randomIndex
+    .map((index) => mockData[index])
+    .forEach((element) => {
+      randomData[Object.keys(element)[0]] =
+        counters[Object.keys(element)[0]] || 0;
+    });
 
   return {
     quantity: randomQuantity,
-    names: randomData
-  }
-}
+    names: randomData,
+  };
+};
 
-const writeData = async (text:string) => {
+//write modificactions in the counter.txt
+const writeData = async (text: string) => {
   const filePath = path.resolve(__dirname, "counter.txt");
 
   return new Promise((res, rej) => {
@@ -73,49 +82,45 @@ export async function getNames() {
   return data;
 }
 
-export async function updateName(name:string,type:string):Promise<returnUpdateName>{
+//update name values ​​according to actions
+export async function updateName(
+  name: string,
+  type: actionType
+): Promise<returnUpdateName> {
+  const data = (await getNames()) as nameCounters;
 
-  const data = await getNames() as nameCounters
-
-  console.log(type,name)
+  console.log(type, name);
 
   if (name && typeof name === "string") {
-
-    
     switch (type) {
-      case "plus":
-
-        data[name] ? data[name]++ : data[name] =1
+      case actionType.plus:
+        data[name] ? data[name]++ : (data[name] = 1);
         break;
 
-      case "minus":
+      case actionType.minus:
+        data[name] > 1 ? data[name]-- : delete data[name];
+        break;
 
-        data[name] > 1 ? data[name]-- : delete data[name]
-        break
-
-      case "delete":
-
-        data[name] && delete data[name]
-        break
+      case actionType.delete:
+        data[name] && delete data[name];
+        break;
 
       default:
         break;
     }
 
-
     await writeData(JSON.stringify(data));
 
-    return{
+    return {
       message: "sucessfull",
       error: false,
-      data: data[name] || 0
-    }
-  }else{
-      return{
+      data: data[name] || 0,
+    };
+  } else {
+    return {
       message: "",
       error: true,
-      data: 0
-    }
+      data: 0,
+    };
   }
-
 }
