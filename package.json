@@ -31,7 +31,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "eject": "react-scripts eject",
+    "eject": "react-scripts ejsect",
     "server": "ts-node --project tsconfig.server.json server/index.ts",
     "watch:server": "nodemon -w server -e ts --exec yarn server",
     "watch:all": "concurrently -n back,front \"yarn start\" \"yarn watch:server\" ",
