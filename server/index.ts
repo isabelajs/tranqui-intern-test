@@ -5,18 +5,18 @@ import path from "path";
 import dotenv from 'dotenv'
 
 const app = express()
-const port = 3333;
+const port = 5000;
 dotenv.config()
 
-let url:string
+// let url:string
 
-if(process.env.NODE_MODE === 'PRODUCTION'){
-  url = 'https://tranqui-test.herokuapp.com'
-}else{
-  url = 'http://localhost:'
-}
+// if(process.env.NODE_MODE === 'PRODUCTION'){
+//   url = 'https://tranqui-test.herokuapp.com'
+// }else{
+//   url = 'http://localhost:'
+// }
 
-console.log(process.env.NODE_TEST)
+console.log(process.env.NODE_ENV, process.env.NODE_MODE)
 //middlewares
 app.use(express.json());
 app.use(cors());
