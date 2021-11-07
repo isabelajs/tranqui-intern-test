@@ -66,10 +66,19 @@ export const getRandomNames = async () => {
 //write modificactions in the counter.txt
 const writeData = async (text: string) => {
   const filePath = path.resolve(__dirname, "counter.txt");
+  const rawFilePath = path.join(__dirname, "counterRaw.txt");
 
   return new Promise((res, rej) => {
     fs.writeFile(filePath, text, function (err) {
       if (err) return rej(err);
+
+      const data = JSON.parse(text);
+
+      const newText = Object.entries(data)
+        .map((name) => `${name[0]}: ${name[1]}`)
+        .join("\n");
+
+      fs.writeFileSync(rawFilePath, newText, { encoding: "utf8", flag: "w" });
 
       res("Write sucesfull");
     });

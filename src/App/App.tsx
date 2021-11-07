@@ -10,15 +10,50 @@ import {
   TableCell,
   TableBody,
 } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import React, { useEffect, useCallback, useState } from "react";
-import "../styles/app.scss";
 
 interface nameCounter {
   [key: string]: number;
 }
+
+const useStyles = makeStyles({
+  root: {},
+  container__title: {
+    textAlign: "center",
+    marginBottom: 40,
+  },
+  titleRow: {
+    backgroundColor: "#2196f3",
+  },
+  loading: {
+    width: 80,
+    height: 80,
+    margin: "0 auto",
+    "&:after": {
+      content: '""',
+      display: "block",
+      width: 64,
+      height: 64,
+      margin: 8,
+      borderRadius: "50%",
+      border: "6px solid #2196f3",
+      borderColor: "#2196f3 transparent",
+      animation: "lds-dual-ring 1.2s linear infinite",
+    },
+  },
+  "@keyframes loading": {
+    "0%": {
+      transform: "rotate(0deg)",
+    },
+    "100%": {
+      transform: "rotate(360deg)",
+    },
+  },
+});
 
 export default function App() {
   const [state, setState] = useState({
@@ -26,6 +61,8 @@ export default function App() {
     loading: true,
     error: false,
   });
+
+  const classes = useStyles();
 
   const fetchData = useCallback(async () => {
     const res = await fetch(`http://localhost:5000/api/randomnames`);
@@ -65,6 +102,7 @@ export default function App() {
 
   useEffect(() => {
     fetchData();
+
     const timer = setInterval(() => {
       fetchData();
     }, 5000);
@@ -74,13 +112,13 @@ export default function App() {
 
   return (
     <>
-      <Container className="container" maxWidth="md">
-        <h1 className="container__title">
+      <Container maxWidth="md">
+        <h1 className={classes.container__title}>
           Prueba para practicante de desarrollo web
         </h1>
 
         {state.loading ? (
-          <div className="lds-dual-ring"></div>
+          <div className={classes.loading}></div>
         ) : (
           <TableContainer component={Paper} sx={{ margin: 0 }}>
             <Table
@@ -90,13 +128,25 @@ export default function App() {
             >
               <TableHead>
                 <TableRow>
-                  <TableCell className="titleRow" align="center">
+                  <TableCell
+                    className={classes.titleRow}
+                    sx={{ color: "white" }}
+                    align="center"
+                  >
                     Nombre
                   </TableCell>
-                  <TableCell className="titleRow" align="center">
+                  <TableCell
+                    className={classes.titleRow}
+                    sx={{ color: "white" }}
+                    align="center"
+                  >
                     Contador
                   </TableCell>
-                  <TableCell className="titleRow" align="center">
+                  <TableCell
+                    className={classes.titleRow}
+                    sx={{ color: "white" }}
+                    align="center"
+                  >
                     Acción
                   </TableCell>
                 </TableRow>
